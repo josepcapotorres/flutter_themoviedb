@@ -5,14 +5,14 @@ import 'package:flutter_themoviedb/providers/movies_provider.dart';
 class DataSearch extends SearchDelegate {
   String selection = "";
   final _moviesProvider = MoviesProvider();
-  List<MovieModel> _moviesList;
+  List<MovieModel> _moviesList = [];
 
   @override
   List<Widget> buildActions(BuildContext context) {
     // AppBar actions. Such as clear text icon
     return [
       IconButton(
-        icon: Icon(Icons.clear),
+        icon: const Icon(Icons.clear),
         onPressed: () {
           query = "";
         },
@@ -42,7 +42,7 @@ class DataSearch extends SearchDelegate {
         return ListTile(
           leading: FadeInImage(
             image: NetworkImage(m.getPosterImg()),
-            placeholder: AssetImage("assets/img/no-image.jpg"),
+            placeholder: const AssetImage("assets/img/no-image.jpg"),
             width: 50,
             fit: BoxFit.contain,
           ),
@@ -70,14 +70,14 @@ class DataSearch extends SearchDelegate {
       future: _moviesProvider.searchMovie(query),
       builder: (_, AsyncSnapshot<List<MovieModel>> snapshot) {
         if (snapshot.hasData) {
-          _moviesList = snapshot.data;
+          _moviesList = snapshot.data!;
 
           return ListView(
             children: _moviesList.map((m) {
               return ListTile(
                 leading: FadeInImage(
-                  image: NetworkImage(m.getPosterImg()),
-                  placeholder: AssetImage("assets/img/no-image.jpg"),
+                  image: NetworkImage(m.fullPosterImg),
+                  placeholder: const AssetImage("assets/img/no-image.jpg"),
                   width: 50,
                   fit: BoxFit.contain,
                 ),
@@ -92,7 +92,7 @@ class DataSearch extends SearchDelegate {
             }).toList(),
           );
         } else {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }

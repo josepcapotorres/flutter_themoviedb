@@ -15,14 +15,15 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text("Now playing movies"),
+        title: const Text("Now playing movies"),
         backgroundColor: Colors.indigoAccent,
+        foregroundColor: Colors.white,
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () {
               showSearch(
-                context: context, 
+                context: context,
                 delegate: DataSearch(),
               );
             },
@@ -46,13 +47,13 @@ class HomePage extends StatelessWidget {
       future: _moviesProvider.getNowPlaying(),
       builder: (_, AsyncSnapshot<List<MovieModel>> snapshot) {
         if (snapshot.hasData) {
-          return CardSwiper(
-            movies: snapshot.data,
+          return CustomCardSwiper(
+            movies: snapshot.data!,
           );
         } else {
           return Container(
             height: 100,
-            child: Center(
+            child: const Center(
               child: CircularProgressIndicator(),
             ),
           );
@@ -68,13 +69,13 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.only(left: 20),
+            padding: const EdgeInsets.only(left: 20),
             child: Text(
               "Populars",
-              style: Theme.of(context).textTheme.subtitle2,
+              style: Theme.of(context).textTheme.titleSmall,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           StreamBuilder(
@@ -82,11 +83,11 @@ class HomePage extends StatelessWidget {
             builder: (_, AsyncSnapshot<List<MovieModel>> snapshot) {
               if (snapshot.hasData) {
                 return MovieHorizontal(
-                  movies: snapshot.data,
+                  movies: snapshot.data!,
                   nextPage: _moviesProvider.getPopulars,
                 );
               } else {
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               }

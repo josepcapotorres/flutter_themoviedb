@@ -1,26 +1,22 @@
 class Cast {
-  List<CharacterModel> characters = List();
+  List<CharacterModel> characters = [];
 
-  Cast.fromJsonList(List<dynamic> jsonList) {
+  Cast.fromJsonList(List<dynamic>? jsonList) {
     if (jsonList == null) return;
 
-    jsonList.forEach((item) {
-      final character = CharacterModel.fromJsonMap(item);
-
-      characters.add(character);
-    });
+    characters = jsonList.map((e) => CharacterModel.fromJsonMap(e)).toList();
   }
 }
 
 class CharacterModel {
-  int castId;
-  String character;
-  String creditId;
-  int gender;
-  int id;
-  String name;
-  int order;
-  String profilePath;
+  late int castId;
+  late String character;
+  late String creditId;
+  late int gender;
+  late int id;
+  late String name;
+  late int order;
+  String? profilePath;
 
   CharacterModel.fromJsonMap(Map<String, dynamic> json) {
     castId = json["cast_id"];
@@ -33,7 +29,7 @@ class CharacterModel {
     profilePath = json["profile_path"];
   }
 
-  getPhoto() {
+  String getPhoto() {
     if (profilePath == null) {
       return "https://www.animeomega.es/foro/styles/canvas/theme/images/no_avatar.jpg";
     } else {

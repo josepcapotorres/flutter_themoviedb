@@ -6,11 +6,11 @@ import 'package:flutter_themoviedb/models/movie_model.dart';
 import 'package:http/http.dart' as http;
 
 class MoviesProvider {
-  String _apiKey = "5e63629e7a6d66be730187029d96cba7";
-  String _url = "api.themoviedb.org";
-  String _language = "en-us";
+  final String _apiKey = "5e63629e7a6d66be730187029d96cba7";
+  final String _url = "api.themoviedb.org";
+  final String _language = "en-us";
   int _popularsPage = 0;
-  List<MovieModel> _populars = new List();
+  final List<MovieModel> _populars = [];
   bool _loading = false;
 
   final _popularsStreamController =
@@ -89,6 +89,6 @@ class MoviesProvider {
   }
 
   void dispose() {
-    _popularsStreamController?.close();
+    _popularsStreamController.close();
   }
 }

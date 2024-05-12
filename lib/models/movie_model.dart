@@ -1,51 +1,31 @@
 class MoviesModel {
-  List<MovieModel> items = new List();
+  List<MovieModel> items = [];
 
   MoviesModel();
 
-  MoviesModel.fromJsonList(List<dynamic> jsonList) {
+  MoviesModel.fromJsonList(List<dynamic>? jsonList) {
     if (jsonList == null) return;
 
-    for (final item in jsonList) {
-      final movie = new MovieModel.fromJsonMap(item);
-      items.add(movie);
-    }
+    items = jsonList.map((e) => MovieModel.fromJsonMap(e)).toList();
   }
 }
 
 class MovieModel {
-  String uniqueId;
-  int voteCount;
-  int id;
-  bool video;
-  double voteAverage;
-  String title;
-  double popularity;
-  String posterPath;
-  String originalLanguage;
-  String originalTitle;
-  List<int> genreIds;
-  String backdropPath;
-  bool adult;
-  String overview;
-  String releaseDate;
-
-  MovieModel({
-    this.voteCount,
-    this.id,
-    this.video,
-    this.voteAverage,
-    this.title,
-    this.popularity,
-    this.posterPath,
-    this.originalLanguage,
-    this.originalTitle,
-    this.genreIds,
-    this.backdropPath,
-    this.adult,
-    this.overview,
-    this.releaseDate,
-  });
+  late String uniqueId;
+  late int voteCount;
+  late int id;
+  late bool video;
+  late double voteAverage;
+  late String title;
+  late double popularity;
+  String? posterPath;
+  late String originalLanguage;
+  late String originalTitle;
+  late List<int> genreIds;
+  String? backdropPath;
+  late bool adult;
+  late String overview;
+  late String releaseDate;
 
   MovieModel.fromJsonMap(Map<String, dynamic> json) {
     voteCount = json['vote_count'];
@@ -64,19 +44,27 @@ class MovieModel {
     releaseDate = json['release_date'];
   }
 
-  getPosterImg() {
+  String getPosterImg() {
     if (posterPath == null) {
-      return "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png";
+      return "https://icons8.com/icon/122635/no-image";
     } else {
-      return "https://image.tmdb.org/t/p/w500/$posterPath";
+      return "https://image.tmdb.org/t/p/w500$posterPath";
     }
   }
 
-  getBackgroundImg() {
-    if (posterPath == null) {
-      return "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png";
-    } else {
-      return "https://image.tmdb.org/t/p/w500/$backdropPath";
+  String get fullBackdropPath {
+    if (backdropPath != null) {
+      return 'https://image.tmdb.org/t/p/w500$backdropPath ';
     }
+
+    return 'https://i.stack.imgur.com/GNhxO.png';
+  }
+
+  String get fullPosterImg {
+    if (posterPath != null) {
+      return 'https://image.tmdb.org/t/p/w500$posterPath';
+    }
+
+    return 'https://i.stack.imgur.com/GNhxO.png';
   }
 }

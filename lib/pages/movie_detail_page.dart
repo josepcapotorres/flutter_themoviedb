@@ -6,7 +6,11 @@ import 'package:flutter_themoviedb/providers/movies_provider.dart';
 class MovieDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final MovieModel movie = ModalRoute.of(context).settings.arguments;
+    final movie = ModalRoute.of(context)?.settings.arguments as MovieModel?;
+
+    if (movie == null) {
+      return const Center(child: Text("Movie not found"));
+    }
 
     return Scaffold(
       body: CustomScrollView(
@@ -14,7 +18,7 @@ class MovieDetailPage extends StatelessWidget {
           _createAppbar(movie),
           SliverList(
             delegate: SliverChildListDelegate([
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _posterTitle(context, movie),
               _description(movie),
               _createCasting(movie),
@@ -29,6 +33,7 @@ class MovieDetailPage extends StatelessWidget {
     return SliverAppBar(
       elevation: 2.0,
       backgroundColor: Colors.indigoAccent,
+      foregroundColor: Colors.white,
       expandedHeight: 200,
       floating: false,
       pinned: true,
@@ -36,15 +41,15 @@ class MovieDetailPage extends StatelessWidget {
         centerTitle: true,
         title: Text(
           movie.title,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 16,
           ),
         ),
         background: FadeInImage(
-          image: NetworkImage(movie.getBackgroundImg()),
-          placeholder: AssetImage("assets/img/loading.gif"),
-          fadeInDuration: Duration(milliseconds: 150),
+          image: NetworkImage(movie.fullBackdropPath),
+          placeholder: const AssetImage("assets/img/loading.gif"),
+          fadeInDuration: const Duration(milliseconds: 150),
           fit: BoxFit.cover,
         ),
       ),
@@ -53,7 +58,7 @@ class MovieDetailPage extends StatelessWidget {
 
   Widget _posterTitle(BuildContext context, MovieModel movie) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
           Hero(
@@ -66,7 +71,7 @@ class MovieDetailPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 20,
           ),
           Flexible(
@@ -75,20 +80,20 @@ class MovieDetailPage extends StatelessWidget {
               children: [
                 Text(
                   movie.title,
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.titleLarge,
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
                   movie.originalTitle,
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: Theme.of(context).textTheme.titleMedium,
                   overflow: TextOverflow.ellipsis,
                 ),
                 Row(
                   children: [
-                    Icon(Icons.star_border),
+                    const Icon(Icons.star_border),
                     Text(
                       movie.voteAverage.toString(),
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ],
                 ),
@@ -102,7 +107,7 @@ class MovieDetailPage extends StatelessWidget {
 
   Widget _description(MovieModel movie) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: Text(
         movie.overview,
         textAlign: TextAlign.justify,
@@ -117,9 +122,9 @@ class MovieDetailPage extends StatelessWidget {
       future: movieProvider.getCast(movie.id.toString()),
       builder: (context, AsyncSnapshot<List<CharacterModel>> snapshot) {
         if (snapshot.hasData) {
-          return _createCharactersPageView(snapshot.data);
+          return _createCharactersPageView(snapshot.data!);
         } else {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
@@ -141,7 +146,7 @@ class MovieDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _characterCard(CharacterModel character){
+  Widget _characterCard(CharacterModel character) {
     return Container(
       child: Column(
         children: [
@@ -150,7 +155,7 @@ class MovieDetailPage extends StatelessWidget {
             child: FadeInImage(
               height: 150,
               image: NetworkImage(character.getPhoto()),
-              placeholder: AssetImage("assets/img/no-image.jpg"), 
+              placeholder: const AssetImage("assets/img/no-image.jpg"),
               fit: BoxFit.cover,
             ),
           ),
